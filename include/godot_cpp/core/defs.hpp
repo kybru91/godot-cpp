@@ -35,6 +35,8 @@
 #include <cstdint>
 #include <cstring>
 
+namespace godot {
+
 #if !defined(GDE_EXPORT)
 #if defined(_WIN32)
 #define GDE_EXPORT __declspec(dllexport)
@@ -108,7 +110,7 @@ typedef float real_t;
 // Generic swap template.
 #ifndef SWAP
 #define SWAP(m_x, m_y) __swap_tmpl((m_x), (m_y))
-template <class T>
+template <typename T>
 inline void __swap_tmpl(T &x, T &y) {
 	T aux = x;
 	x = y;
@@ -126,5 +128,11 @@ struct BuildIndexSequence : BuildIndexSequence<N - 1, N - 1, Is...> {};
 
 template <size_t... Is>
 struct BuildIndexSequence<0, Is...> : IndexSequence<Is...> {};
+
+} //namespace godot
+
+// To maintain compatibility an alias is defined outside the namespace.
+// Consider it deprecated.
+using real_t = godot::real_t;
 
 #endif // GODOT_DEFS_HPP

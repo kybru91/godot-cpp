@@ -1,12 +1,17 @@
 # godot-cpp
 
-> **Warning**
+> [!WARNING]
 >
-> This repository's `master` branch is only usable with the latest version of
-> Godot's ([GDExtension](https://godotengine.org/article/introducing-gd-extensions))
-> API (Godot 4.1 and later).
+> This repository's `master` branch is only usable with
+> [GDExtension](https://godotengine.org/article/introducing-gd-extensions)
+> from Godot's `master` branch.
 >
-> For users of Godot 4.0.x, switch to the [`4.0`](https://github.com/godotengine/godot-cpp/tree/4.0) branch.
+> For users of stable branches, switch to the branch matching your target Godot version:
+> - [`4.2`](https://github.com/godotengine/godot-cpp/tree/4.2)
+> - [`4.1`](https://github.com/godotengine/godot-cpp/tree/4.1)
+> - [`4.0`](https://github.com/godotengine/godot-cpp/tree/4.0)
+>
+> Or check out the Git tag matching your Godot version (e.g. `godot-4.1.1-stable`).
 >
 > For GDNative users (Godot 3.x), switch to the [`3.x`](https://github.com/godotengine/godot-cpp/tree/3.x)
 > or the [`3.5`](https://github.com/godotengine/godot-cpp/tree/3.5) branch.
@@ -17,7 +22,7 @@ This repository contains the  *C++ bindings* for the [**Godot Engine**](https://
 - [**Compatibility**](#compatibility)
 - [**Contributing**](#contributing)
 - [**Getting started**](#getting-started)
-- [**Included example**](#included-example)
+- [**Examples and templates**](#examples-and-templates)
 
 ## Versioning
 
@@ -44,17 +49,20 @@ Godot version.**
 
 ## Compatibility
 
-**Warning:** The GDExtension API is brand new in Godot 4.0, and is still
+> [!WARNING]
+>
+> The GDExtension API is brand new in Godot 4.0, and is still
 considered in **beta** stage, despite Godot 4.0 itself being released.
-
-This applies to both the GDExtension interface header, the API JSON, and this
+>
+> This applies to both the GDExtension interface header, the API JSON, and this
 first-party `godot-cpp` extension.
-
-Some compatibility breakage is to be expected as GDExtension and `godot-cpp`
-get more used, documented, and critical issues get resolved. See the
-[issue tracker](https://github.com/godotengine/godot/issues) for a list of known
-issues, and be sure to provide feedback on issues and PRs which affect your use
-of this extension.
+>
+> Some compatibility breakage is to be expected as GDExtension and `godot-cpp`
+> get more used, documented, and critical issues get resolved. See the
+> [Godot issue tracker](https://github.com/godotengine/godot/issues?q=is%3Aissue+is%3Aopen+label%3Atopic%3Agdextension)
+> and the [godot-cpp issue tracker](https://github.com/godotengine/godot-cpp/issues)
+> for a list of known issues, and be sure to provide feedback on issues and PRs
+> which affect your use of this extension.
 
 ## Contributing
 
@@ -68,7 +76,10 @@ so formatting is done before your changes are submitted.
 
 ## Getting started
 
-It's a bit similar to what it was for 3.x but also a bit different.
+You need the same C++ pre-requisites installed that are required for the `godot` repository. Follow the [official build instructions for your target platform](https://docs.godotengine.org/en/latest/contributing/development/compiling/index.html#building-for-target-platforms).
+
+Getting started with GDExtensions is a bit similar to what it was for 3.x but also a bit different.
+
 This new approach is much more akin to how core Godot modules are structured.
 
 Compiling this repository generates a static library to be linked with your shared lib,
@@ -76,22 +87,22 @@ just like before.
 
 To use the shared lib in your Godot project you'll need a `.gdextension`
 file, which replaces what was the `.gdnlib` before.
-Follow [the example](test/demo/example.gdextension):
+See [example.gdextension](test/project/example.gdextension) used in the test project:
 
 ```ini
 [configuration]
 
 entry_symbol = "example_library_init"
-compatibility_minimum = 4.1
+compatibility_minimum = "4.1"
 
 [libraries]
 
-macos.debug = "bin/libgdexample.macos.debug.framework"
-macos.release = "bin/libgdexample.macos.release.framework"
-windows.debug.x86_64 = "bin/libgdexample.windows.debug.x86_64.dll"
-windows.release.x86_64 = "bin/libgdexample.windows.release.x86_64.dll"
-linux.debug.x86_64 = "bin/libgdexample.linux.debug.x86_64.so"
-linux.release.x86_64 = "bin/libgdexample.linux.release.x86_64.so"
+macos.debug = "res://bin/libgdexample.macos.debug.framework"
+macos.release = "res://bin/libgdexample.macos.release.framework"
+windows.debug.x86_64 = "res://bin/libgdexample.windows.debug.x86_64.dll"
+windows.release.x86_64 = "res://bin/libgdexample.windows.release.x86_64.dll"
+linux.debug.x86_64 = "res://bin/libgdexample.linux.debug.x86_64.so"
+linux.release.x86_64 = "res://bin/libgdexample.linux.release.x86_64.so"
 # Repeat for other architectures to support arm64, rv64, etc.
 ```
 
@@ -123,12 +134,16 @@ void initialize_example_module(ModuleInitializationLevel p_level) {
 	if (p_level != MODULE_INITIALIZATION_LEVEL_SCENE) {
 		return;
 	}
-	ClassDB::register_class<Example>();
+	GDREGISTER_CLASS(Example);
 }
 ```
 
 Any node and resource you register will be available in the corresponding `Create...` dialog. Any class will be available to scripting as well.
 
-## Included example
+## Examples and templates
 
-Check the project in the `test` folder for an example on how to use and register different things.
+See the [godot-cpp-template](https://github.com/godotengine/godot-cpp-template) project for a
+generic reusable template.
+
+Or checkout the code for the [Summator example](https://github.com/paddy-exe/GDExtensionSummator)
+as shown in the [official documentation](https://docs.godotengine.org/en/latest/tutorials/scripting/gdextension/gdextension_cpp_example.html).
