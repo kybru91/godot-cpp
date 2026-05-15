@@ -35,7 +35,7 @@ jobs:
           - name: 🐧 Linux (GCC) for Godot 4.6
             os: ubuntu-22.04
             platform: linux
-            artifact-name: godot-cpp-linux-glibc2.27-x86_64-release-godot45
+            artifact-name: godot-cpp-linux-glibc2.27-x86_64-release-godot46
             artifact-path: bin/libgodot-cpp.linux.template_release.x86_64.a
             run-tests: true
             api-version: 4.6
